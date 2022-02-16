@@ -1,11 +1,12 @@
 from lib import *
 import settings.token as token
 
-client = commands.Bot(command_prefix='.')
+client = commands.Bot(command_prefix='.', intents=discord.Intents.all())
 
 extensions = [
     'games.minesweeper',
-    'commands.users_command'
+    'commands.users_command',
+    'server_info.info'
 ]
 
 if __name__ == '__main__':
@@ -13,5 +14,5 @@ if __name__ == '__main__':
         client.load_extension(ext)
 
 
-print("bot.py started")
+print("---fine---")
 client.run(token.TOKEN)
