@@ -1,4 +1,7 @@
-from lib import *
+import discord
+
+from discord.ext import commands
+
 import settings.token as token
 
 client = commands.Bot(command_prefix='.', intents=discord.Intents.all())

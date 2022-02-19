@@ -1,4 +1,6 @@
-from lib import *
+import discord
+
+from discord.ext import commands
 
 
 class UsersCommand(commands.Cog):

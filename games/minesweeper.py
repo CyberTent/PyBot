@@ -1,4 +1,7 @@
-from lib import *
+import random
+
+from discord.ext import commands
+
 
 errortxt = ('Команда должна выглядить следующим образом:\n`.boom <столбцы> <строки> <бомбы>`\n\n',
             'Можно не указывать строки, столбцы и бомбы, но тогда я построю своё поле.')
