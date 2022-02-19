@@ -9,6 +9,7 @@ client = commands.Bot(command_prefix='.', intents=discord.Intents.all())
 extensions = [
     'games.minesweeper',
     'commands.users_command',
+    'commands.other_command',
     'server_info.info'
 ]
 
