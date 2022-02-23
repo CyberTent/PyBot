@@ -1,6 +1,7 @@
 import discord
-
 from discord.ext import commands
+
+from datetime import datetime
 
 
 class OtherCommand(commands.Cog):
@@ -10,13 +11,22 @@ class OtherCommand(commands.Cog):
     # Озвучка сообщений через бота
     @commands.command()
     @commands.has_permissions(administrator=True)
-    async def say(self, ctx):
-        await ctx.channel.purge(limit=1)
-        channel_id = int(ctx.message.content.split()[1])
-        my_channel = self.bot.get_channel(id=channel_id)
-        await my_channel.send(ctx.message.content.replace('.say', '').replace(f'{channel_id}', ''), tts=True)
-        '''while True:
-            await my_channel.send('https://boobzone.pro/uploads/posts/2022-01/1641190928_4-boobzone-pro-p-krasivie-muzhskie-chleni-porno-4.jpg')'''
+    async def say(self, ctx, arg1):
+        try:
+            # await ctx.channel.purge(limit=1)
+            my_channel = self.bot.get_channel(id=int(arg1))
+            await my_channel.send(ctx.message.content.replace('.say', '').replace(f'{arg1}', ''), tts=True)
+        except:
+            embed = discord.Embed(title="Error message", colour=0xFF0000, timestamp=datetime.utcnow())
+            embed.set_author(name='Информатор',
+                             icon_url='https://cspromogame.ru//storage/upload_images/avatars/2038.jpg')
+            embed.add_field(name="Причины возникновения ошибок",
+                            value='**1.** Неверная структура комманды\n'
+                                  '**2.** Указанный id несуществует\n'
+                                  '**3.** Нет доступа к указанному чату', inline=False)
+            embed.add_field(name="Структура комманды",
+                            value='```.say [id канала] [сообщение]```', inline=False)
+            await ctx.send(embed=embed)
 
     # Очистка чата
     @commands.command(pass_context=True)

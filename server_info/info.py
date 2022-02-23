@@ -13,18 +13,58 @@ class ServerInfo(commands.Cog):
     @commands.Cog.listener()
     async def on_ready(self):
         await self.bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=".help"))
+        guild = self.bot.get_guild(id=guild_id)
 
         print(f'Bot worked in {len(self.bot.guilds)} servers:')
         server_number = 1
         member_count = 1
+
         for server_name in self.bot.guilds:
+            category_name = str(server_name).lower()
+
+            if category_name.lower() not in [str(category).lower() for category in guild.categories]:
+                await guild.create_category(category_name)
+
+                channel_name = 'channels'
+                cat = discord.utils.get(guild.categories, name=category_name)
+                channel_new = await guild.create_text_channel(channel_name, category=cat)
+                await channel_new.send('Ебать')
+                channel_name = 'members'
+                await guild.create_text_channel(channel_name, category=cat)
+                channel_name = 'server_info'
+                await guild.create_text_channel(channel_name, category=cat)
+                channel_name = '<log>'
+                await guild.create_text_channel(channel_name, category=cat)
+
             print(f'{server_number} | {server_name} | {server_name.id} | {len(server_name.members)}')
+
+            if len(server_name.categories) != 0:
+                for channel in server_name.text_channels:
+                    if channel.category_id is None:
+                        print(f'Текст: {channel} || {channel.id}')
+                for channel in server_name.voice_channels:
+                    if channel.category_id is None:
+                        print(f'Голос: {channel} || {channel.id}')
+            if len(server_name.categories) != 0:
+                '''print(server_name.categories)
+                print(server_name.text_channels)
+                print(server_name.voice_channels)'''
+                for category in server_name.categories:
+                    print(f'Категория: {category} || {category.id}')
+                    for channel in category.text_channels:
+                        print(f'\tТекст: {channel} || {channel.id}')
+                    for channel in category.voice_channels:
+                        print(f'\tГолос: {channel} || {channel.id}')
+            else:
+                for channel in server_name.text_channels:
+                    print(f'Текст: {channel} || {channel.id}')
+                for channel in server_name.voice_channels:
+                    print(f'Голос: {channel} || {channel.id}')
+
             for member in server_name.members:
                 print(f'\t{member_count} || {member.nick} || {member.name} || '
                       f'{member.discriminator} || {member.id} || {member.bot} || ')
                 member_count += 1
-            for channel in server_name.text_channels:
-                print(f'Каналы: {channel} || {channel.id}')
             member_count = 1
             server_number += 1
 
@@ -42,7 +82,7 @@ class ServerInfo(commands.Cog):
         '''msg = f'{message.guild}: {message.created_at} | {message.channel} | {message.author}|' \
               f' {message.author.id} | {message.author.bot}:\n```{message.content}```'''
 
-        if message.channel.id != messages_channel:
+        if message.channel.id != messages_channel and message.author.bot is not True:
             embed = discord.Embed(title="Message log", colour=0x87CEEB, timestamp=datetime.utcnow())
             embed.set_author(name=message.author, icon_url=message.author.avatar_url)
             embed.add_field(name="Server", value=f'**name:** {message.guild}\n**id:** {message.guild.id}', inline=False)
