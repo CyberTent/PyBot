@@ -35,7 +35,7 @@ class ServerInfo(commands.Cog):
                 channel_new_channels = await guild.create_text_channel(channel_name, category=cat)
                 id_all_channels = channel_new_channels.id
                 await channel_new_channels.send(f'{id_all_channels}')
-                '''channel_name = 'members'
+                channel_name = 'members'
                 channel_new_members = await guild.create_text_channel(channel_name, category=cat)
                 id_all_members = channel_new_members.id
                 await channel_new_members.send(f'{id_all_members}')
@@ -46,7 +46,7 @@ class ServerInfo(commands.Cog):
                 channel_name = '<log>'
                 channel_new_log = await guild.create_text_channel(channel_name, category=cat)
                 id_log = channel_new_log.id
-                await channel_new_log.send(f'{id_log}')'''
+                await channel_new_log.send(f'{id_log}')
 
             print(f'{server_number} | {server_name} | {server_name.id} | {len(server_name.members)}')
 
@@ -58,9 +58,6 @@ class ServerInfo(commands.Cog):
                     if channel.category_id is None:
                         print(f'Голос: {channel} || {channel.id}')
             if len(server_name.categories) != 0:
-                '''print(server_name.categories)
-                print(server_name.text_channels)
-                print(server_name.voice_channels)'''
                 for category in server_name.categories:
                     print(f'Категория: {category} || {category.id}')
                     for channel in category.text_channels:
