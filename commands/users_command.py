@@ -13,7 +13,8 @@ class UsersCommand(commands.Cog):
     async def avatar(self, ctx, *,  member: discord.Member = None):
         await ctx.send(member.avatar_url)
 
-    @commands.command()
+    # Создание категорий/каналов
+    '''@commands.command()
     async def new(self, ctx, arg1, arg2):
         guild = self.bot.get_guild(id=guild_id)
         if arg1 == "channel":
@@ -23,7 +24,7 @@ class UsersCommand(commands.Cog):
 
         elif arg1 == "category":
             if arg2.lower() not in [str(category) for category in guild.categories]:
-                await ctx.guild.create_category(arg2)
+                await ctx.guild.create_category(arg2)'''
 
 
 def setup(bot):

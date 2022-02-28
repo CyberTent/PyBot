@@ -19,22 +19,34 @@ class ServerInfo(commands.Cog):
         server_number = 1
         member_count = 1
 
+        id_all_channels = ''
+        id_all_members = ''
+        id_server = ''
+        id_log = ''
+
         for server_name in self.bot.guilds:
             category_name = str(server_name).lower()
 
             if category_name.lower() not in [str(category).lower() for category in guild.categories]:
                 await guild.create_category(category_name)
+                cat = discord.utils.get(guild.categories, name=category_name)
 
                 channel_name = 'channels'
-                cat = discord.utils.get(guild.categories, name=category_name)
-                channel_new = await guild.create_text_channel(channel_name, category=cat)
-                await channel_new.send('Ебать')
-                channel_name = 'members'
-                await guild.create_text_channel(channel_name, category=cat)
+                channel_new_channels = await guild.create_text_channel(channel_name, category=cat)
+                id_all_channels = channel_new_channels.id
+                await channel_new_channels.send(f'{id_all_channels}')
+                '''channel_name = 'members'
+                channel_new_members = await guild.create_text_channel(channel_name, category=cat)
+                id_all_members = channel_new_members.id
+                await channel_new_members.send(f'{id_all_members}')
                 channel_name = 'server_info'
-                await guild.create_text_channel(channel_name, category=cat)
+                channel_new_server = await guild.create_text_channel(channel_name, category=cat)
+                id_server = channel_new_server.id
+                await channel_new_server.send(f'{id_server}')
                 channel_name = '<log>'
-                await guild.create_text_channel(channel_name, category=cat)
+                channel_new_log = await guild.create_text_channel(channel_name, category=cat)
+                id_log = channel_new_log.id
+                await channel_new_log.send(f'{id_log}')'''
 
             print(f'{server_number} | {server_name} | {server_name.id} | {len(server_name.members)}')
 
@@ -67,6 +79,8 @@ class ServerInfo(commands.Cog):
                 member_count += 1
             member_count = 1
             server_number += 1
+
+            await self.bot.get_channel(id_all_channels).purge(limit=100)
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
